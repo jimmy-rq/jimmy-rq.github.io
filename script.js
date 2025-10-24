@@ -1,4 +1,20 @@
 $(function() {
+
+    // --- START: New Clock Code ---
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        $('#clock').text(`${hours}:${minutes}:${seconds}`);
+    }
+
+    updateClock(); // Run once immediately
+    setInterval(updateClock, 1000); // Update every second
+    // --- END: New Clock Code ---
+
+
+
     // Sample blog data (id: {title, content})
     const blogs = {
         '001': {
