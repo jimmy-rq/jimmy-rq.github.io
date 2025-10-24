@@ -13,8 +13,6 @@ $(function() {
     setInterval(updateClock, 1000); // Update every second
     // --- END: New Clock Code ---
 
-
-
     // Sample blog data (id: {title, content})
     const blogs = {
         '001': {
@@ -52,6 +50,10 @@ $(function() {
         let horizontalOffset = 0; // For long lines
         const pageSize = 20; // Lines per "page" (adjust based on terminal height)
 
+        // Save the current terminal state (output and history)
+        const savedState = term.get_output();
+        const savedHistory = term.history().data(); // Use data() to get history
+
         // Display current view
         function displayContent() {
             term.clear();
@@ -83,6 +85,9 @@ $(function() {
                     horizontalOffset--; // Left
                 } else if (key === 'q') {
                     term.pop(); // Exit vim mode
+                    term.clear(); // Clear the terminal
+                    term.echo(savedState); // Restore previous output
+                    term.history().data(savedHistory); // Restore command history
                     return false;
                 }
                 displayContent(); // Refresh view
@@ -111,6 +116,7 @@ $(function() {
         name: 'blog_terminal',
         prompt: '> ',
         height: '100%',
-        width: '100%'
+        width: '100%',
+        history: true // Ensure history is enabled
     });
 });
